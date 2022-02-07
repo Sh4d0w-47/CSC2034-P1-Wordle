@@ -4,6 +4,7 @@
     OOP version of VDM exists (huh?)
     Name first, type second
     invariants: allow to clarify and state assumptions
+    Magic numbers - Ken likes these. If by some unlucky miracle I end up having to do this as a project then use them
 */
 
 -- Apparently VDM requires us to say what's coming up?
@@ -22,7 +23,7 @@ types
     -- One clue per letter, so inv size == 5
     Guess :: word : Word
             clues: seq of Clue
-    inv g == len g.clues = 5;
+    inv g == len g.clues = WORD_LENGTH;
 
     -- Game States: Playing, Won, Lost
      Gamestate = <PLAYING> | <WON> | <LOST>;
@@ -34,11 +35,15 @@ types
         gstate : Gamestate
     -- declare initial gamestate. Can't put empty string as w.len MUST = 5. Could abstract to there's a word from set of answers, issues later on. Clarify in later practical?
     init game == game = mk_Game("STOUT", [], <PLAYING>)
-    inv game == len game.guesses <= 6
+    inv game == len game.guesses <= MAX_GUESSES
     end;
 
 -- like types, declare what's coming up
 values
+
+    -- 'Magic numbers': Ken likes these. Make sure to use
+    WORD_LENGTH = 5;
+    MAX_GUESSES = 6;
 
     -- make a guess, mk_ kinda like a constructor for record type, guess declares type
     g1 = mk_Guess("WEARY", [<GREEN>, <GREY>, <GREY>, <GREY>, <GREY>]);
