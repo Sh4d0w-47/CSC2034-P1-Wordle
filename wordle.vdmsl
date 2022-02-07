@@ -1,12 +1,17 @@
--- NOTES:
-    -- ; separates, not terminates
-    -- VDM doesn't care abt indentation, I've put it in for my sanity
+/* NOTES:
+    ; separates, not terminates
+    VDM doesn't care abt indentation, I've put it in for my sanity
+    OOP version of VDM exists (huh?)
+    Name first, type second
+    invariants: allow to clarify and state assumptions
+*/
 
 -- Apparently VDM requires us to say what's coming up?
 types
 
     Word = seq of char
 
+    -- inv can be seen as clarifying assumptions
     -- Restricts type to 5 letters which must apply to all words
     inv w == len w = 5;
 
@@ -17,13 +22,28 @@ types
     -- One clue per letter, so inv size == 5
     Guess :: word : Word
             clues: seq of Clue
-    inv g == len g.clues = 5
+    inv g == len g.clues = 5;
+
+    -- Game States: Playing, Won, Lost
+     Gamestate = <PLAYING> | <WON> | <LOST>;
+
+    -- essentially a record. Careful, remember name first, type second
+    state Game of
+        wordle : Word
+        guesses : seq of Guess
+        gstate : Gamestate
+    -- declare initial gamestate. Can't put empty string as w.len MUST = 5. Could abstract to there's a word from set of answers, issues later on. Clarify in later practical?
+    init game == game = mk_Game("STOUT", [], <PLAYING>)
+    inv game == len game.guesses <= 6
+    end;
 
 -- like types, declare what's coming up
 values
 
     -- make a guess, mk_ kinda like a constructor for record type, guess declares type
-    g1 = mk_Guess("WEARY", [<GREEN>]);
+    g1 = mk_Guess("WEARY", [<GREEN>, <GREY>, <GREY>, <GREY>, <GREY>]);
+    g2 = mk_Guess("PRINT", [<GREEN>, <GREEN>, <GREEN>, <GREEN>, <GREEN>]);
+    g3 = mk_Guess("PILLS", [<GREEN>, <YELLOW>, <GREY>, <GREY>, <GREY>]);
 
     -- ; to break it up, sometimes you can't
     w1 = "HELLO";
