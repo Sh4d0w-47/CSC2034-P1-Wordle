@@ -7,6 +7,15 @@
     Magic numbers - Ken likes these. If by some unlucky miracle I end up having to do this as a project then use them
 */
 
+/* SUMMARY (taken from slides):
+    Looked at Wordle
+    Identified key concepts
+    Created data types for concepts
+    Added invariants to restrict types
+    Defined game state
+    Refactored to improve
+ */
+
 -- Apparently VDM requires us to say what's coming up?
 types
 
