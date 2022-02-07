@@ -1,0 +1,33 @@
+-- NOTES:
+    -- ; separates, not terminates
+    -- VDM doesn't care abt indentation, I've put it in for my sanity
+
+-- Apparently VDM requires us to say what's coming up?
+types
+
+    Word = seq of char
+
+    -- Restricts type to 5 letters which must apply to all words
+    inv w == len w = 5;
+
+    -- enum, thing called clue can only have 3 values below. '|' is or operator, '<>' is literal, can only check equality, can't do anything else as can't break down
+    Clue = <GREEN> | <YELLOW> | <GREY>;
+
+    -- record type, like struct in C. 2 named elements: word, type of word; clues, seq of Clue. DOT notation to access elements
+    -- One clue per letter, so inv size == 5
+    Guess :: word : Word
+            clues: seq of Clue
+    inv g == len g.clues = 5
+
+-- like types, declare what's coming up
+values
+
+    -- make a guess, mk_ kinda like a constructor for record type, guess declares type
+    g1 = mk_Guess("WEARY", [<GREEN>]);
+
+    -- ; to break it up, sometimes you can't
+    w1 = "HELLO";
+    w2 = "GOODBYE";
+
+    -- each word is equivalent to ['H', 'e', 'l', 'l', 'o']
+    -- print inv_Word(w1) in the debug console to execute
