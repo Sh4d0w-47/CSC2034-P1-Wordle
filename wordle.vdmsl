@@ -23,7 +23,7 @@ types
     -- One clue per letter, so inv size == 5
     Guess :: word : Word
             clues: seq of Clue
-    inv g == len g.clues = WORD_LENGTH;
+    inv mk_Guess(-, clues) == len clues = WORD_LENGTH;
 
     -- Game States: Playing, Won, Lost
      Gamestate = <PLAYING> | <WON> | <LOST>;
@@ -35,7 +35,9 @@ types
         gstate : Gamestate
     -- declare initial gamestate. Can't put empty string as w.len MUST = 5. Could abstract to there's a word from set of answers, issues later on. Clarify in later practical?
     init game == game = mk_Game("STOUT", [], <PLAYING>)
-    inv game == len game.guesses <= MAX_GUESSES
+    -- Binding 3 state variables via constructor. Nicer than previous case. Pattern matching, more readable.
+    -- '-' used to show you don't care and it doesn't matter. Previously was wordle and gstate respectively
+    inv mk_Game(-, guesses, -) == len guesses <= MAX_GUESSES
     end;
 
 -- like types, declare what's coming up
