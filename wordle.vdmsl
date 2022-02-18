@@ -67,3 +67,36 @@ values
 
     -- each word is equivalent to ['H', 'e', 'l', 'l', 'o']
     -- print inv_Word(w1) in the debug console to execute
+
+operations
+    
+    -- Computer guesses a word from the set word, IF play state is still play and enough remaining guesses and the word is valid
+    make_guess: Word ==> Guess
+    make_guess(word) == (
+        dcl g: Guess := mk_Guess(word,check_guess(wordle,word));
+        guesses := guesses ^ [g];
+        if word = wordle then gstate := <WON>
+        else if len guesses = MAX_GUESSES then gstate := <LOST>;
+        return g
+    )    
+    pre gstate = <PLAYING> and
+        len guesses < MAX_GUESSES and
+        (word in set elems ALLOWED or
+        word in set elems ANSWERS);    
+
+    check_guess: Word * Word ==> seq of Clue
+    check_guess(word, gs) ==(
+        dcl clues: seq of Clue := [];
+        for all i in set inds gs do
+        clues(i) := check_letter(gs(i),i,word); 
+        return clues
+    )
+
+functions
+    
+    check_letter: char * nat1 * Word -> Clue
+    check_letter(c, i, word) ==
+        if word(i) = c then <GREEN>
+        elseif c not in set elems word then <GREY>
+        else <YELLOW>
+    pre i <= WORD_LENGTH -- i is a valid index, start at 1 remember
